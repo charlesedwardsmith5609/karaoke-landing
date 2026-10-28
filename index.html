@@ -2,141 +2,207 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Karaoke Karl</title>
-<meta name="description" content="Request a song, tip the host, and join the fun with Karaoke Karl.">
-<meta name="theme-color" content="#0a1530">
+<meta name="description" content="Karaoke Karl: every Wednesday, 7 to 11 PM at Aegir's Public House. Request a song, tip the host, and join the costume contest.">
+<meta name="theme-color" content="#0e061e">
 <link rel="icon" href="karl.png">
 <style>
   @font-face { font-family: "Fjalla One"; src: url("fonts/fjalla-one.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
   @font-face { font-family: "Lora"; src: url("fonts/lora-italic.woff2") format("woff2"); font-weight: 400 700; font-style: italic; font-display: swap; }
   :root {
-    --navy: #0a1530;
-    --navy-2: #12265a;
-    --gold: #f0b93a;
-    --gold-2: #ffdc78;
-    --ice: #96cdeb;
-    --white: #ffffff;
+    --orange: #ff7614;
+    --orange-2: #ff9a3c;
+    --gold: #ffd27a;
+    --bone: #f3e8d4;
+    --ink: #1a1020;
+    --night: #0e061e;
   }
   * { box-sizing: border-box; }
-  html, body { margin: 0; min-height: 100%; }
-  body {
-    font-family: "Lora", Georgia, serif;
-    color: var(--white);
-    background:
-      radial-gradient(ellipse at 50% 0%, #2a6fb8 0%, rgba(42,111,184,0) 55%),
-      linear-gradient(180deg, var(--navy-2) 0%, var(--navy) 60%, #050b1c 100%);
-    background-attachment: fixed;
-    -webkit-font-smoothing: antialiased;
+  html, body { margin: 0; background: var(--night); }
+  body { font-family: "Lora", Georgia, serif; color: var(--bone); -webkit-font-smoothing: antialiased; }
+
+  .scene {
+    position: relative; overflow: hidden;
+    min-height: 100vh; min-height: 100svh;
+    background: linear-gradient(180deg, #0e061e 0%, #1d0b35 45%, #3e1648 75%, #8c3424 100%);
   }
+
+  /* ---------- scenery ---------- */
+  .moon {
+    position: absolute; z-index: 0; top: 2.5svh; right: 5vw;
+    width: clamp(64px, 19vw, 104px); aspect-ratio: 1; border-radius: 50%;
+    background:
+      radial-gradient(circle at 30% 28%, rgba(235,196,142,.9) 0 7%, transparent 8%),
+      radial-gradient(circle at 62% 40%, rgba(235,196,142,.8) 0 9%, transparent 10%),
+      radial-gradient(circle at 45% 70%, rgba(235,196,142,.85) 0 8%, transparent 9%),
+      radial-gradient(circle at 72% 72%, rgba(235,196,142,.75) 0 5%, transparent 6%),
+      radial-gradient(circle at 35% 35%, #fff2cf, #ffdca0 62%, #f2c488);
+    box-shadow: 0 0 50px 16px rgba(255,150,60,.35);
+    animation: moonglow 5s ease-in-out infinite;
+  }
+  @keyframes moonglow { 0%,100% { box-shadow: 0 0 44px 12px rgba(255,150,60,.28); } 50% { box-shadow: 0 0 72px 26px rgba(255,150,60,.5); } }
+  .web { position: absolute; z-index: 0; top: 0; left: 0; width: clamp(90px, 28vw, 150px); opacity: .55; pointer-events: none; }
+  .fly { position: absolute; z-index: 1; left: 0; pointer-events: none; will-change: transform; animation: cross linear infinite; }
+  .fly svg { display: block; width: var(--w, 52px); height: auto; animation: flap .34s ease-in-out infinite alternate; transform-origin: 50% 60%; }
+  .fly.b1 { top: 5svh; --w: 54px; animation-duration: 17s; animation-delay: -3s; }
+  .fly.b2 { top: 13svh; --w: 38px; animation-duration: 23s; animation-delay: -12s; }
+  .fly.b3 { top: 21svh; --w: 46px; animation-duration: 29s; animation-delay: -20s; }
+  @keyframes cross { from { transform: translateX(-90px); } to { transform: translateX(calc(100vw + 90px)); } }
+  @keyframes flap { from { transform: scaleY(1); } to { transform: scaleY(.55); } }
+
+  .fog { position: absolute; z-index: 0; left: -20%; width: 140%; height: 26svh; bottom: 6svh; pointer-events: none;
+    background: radial-gradient(ellipse at 30% 60%, rgba(150,90,190,.32), transparent 60%), radial-gradient(ellipse at 75% 50%, rgba(130,80,170,.28), transparent 60%);
+    animation: drift 16s ease-in-out infinite alternate; }
+  @keyframes drift { from { transform: translateX(-6%); } to { transform: translateX(6%); } }
+
+  .ground { position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; height: 84px; pointer-events: none; }
+  .ground svg.hill { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .ground-inner { position: relative; width: min(100%, 520px); height: 100%; margin: 0 auto; }
+  .stone { position: absolute; bottom: 28px; width: 22px; height: 34px; border-radius: 12px 12px 0 0; background: #24123a; }
+  .stone::before { content: ""; position: absolute; left: 50%; top: 7px; width: 2px; height: 14px; margin-left: -1px; background: #3d2860; }
+  .stone::after { content: ""; position: absolute; left: 50%; top: 11px; width: 10px; height: 2px; margin-left: -5px; background: #3d2860; }
+  .pk { position: absolute; bottom: 16px; width: clamp(60px, 16vw, 78px); height: auto; animation: flicker 2.6s ease-in-out infinite; }
+  .pk.l { left: 12px; } .pk.r { right: 12px; animation-delay: -1.3s; }
+  @keyframes flicker { 0%,100% { filter: drop-shadow(0 0 8px rgba(255,140,30,.55)); } 45% { filter: drop-shadow(0 0 18px rgba(255,170,50,.95)); } 70% { filter: drop-shadow(0 0 10px rgba(255,140,30,.65)); } }
+  .handle { position: absolute; left: 0; right: 0; bottom: 18px; text-align: center; font-family: "Fjalla One", "Arial Narrow", sans-serif; letter-spacing: .14em; font-size: 16px; color: var(--bone); opacity: .85; }
+
+  /* ---------- content ---------- */
   main {
-    max-width: 460px;
-    margin: 0 auto;
-    padding: 36px 20px 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    position: relative; z-index: 3;
+    max-width: 460px; margin: 0 auto;
+    min-height: 100vh; min-height: 100svh;
+    padding: clamp(10px, 2.2svh, 22px) 18px 96px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
   }
   .avatar {
-    width: 168px; height: 168px;
-    border-radius: 50%;
-    box-shadow: 0 0 0 4px rgba(240,185,58,.9), 0 12px 40px rgba(0,0,0,.5), 0 0 60px rgba(240,185,58,.25);
-    display: block;
+    width: clamp(92px, 15svh, 158px); height: auto; aspect-ratio: 1; border-radius: 50%; display: block; object-fit: cover;
+    box-shadow: 0 0 0 3px rgba(255,122,20,.95), 0 10px 30px rgba(0,0,0,.55), 0 0 40px rgba(255,122,20,.45);
+    animation: bob 4s ease-in-out infinite, aura 3s ease-in-out infinite;
   }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+  @keyframes aura { 0%,100% { box-shadow: 0 0 0 3px rgba(255,122,20,.95), 0 10px 30px rgba(0,0,0,.55), 0 0 34px rgba(255,122,20,.35); } 50% { box-shadow: 0 0 0 3px rgba(255,170,60,1), 0 10px 30px rgba(0,0,0,.55), 0 0 56px rgba(255,122,20,.7); } }
   h1 {
-    font-family: "Fjalla One", "Arial Narrow", Impact, sans-serif;
-    font-weight: 400;
-    font-size: 44px;
-    letter-spacing: .08em;
-    margin: 22px 0 6px;
-    text-align: center;
-    text-shadow: 0 3px 12px rgba(0,0,0,.5);
+    font-family: "Fjalla One", "Arial Narrow", Impact, sans-serif; font-weight: 400;
+    font-size: clamp(34px, 6.4svh, 46px); letter-spacing: .08em; line-height: 1;
+    margin: clamp(8px, 1.6svh, 14px) 0 0; text-align: center; color: #fff;
+    text-shadow: 0 0 18px rgba(255,122,20,.65), 0 3px 10px rgba(0,0,0,.6);
   }
-  .tag {
-    font-style: italic;
-    font-weight: 600;
-    color: var(--ice);
-    font-size: 18px;
-    margin: 0 0 28px;
-    text-align: center;
-  }
-  .links { width: 100%; display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+  .when { margin: clamp(6px, 1.2svh, 10px) 0 0; text-align: center; line-height: 1.15; }
+  .when .d { display: block; font-family: "Fjalla One", "Arial Narrow", sans-serif; font-size: clamp(19px, 3.3svh, 23px); letter-spacing: .12em; color: var(--gold); }
+  .when .p { display: block; margin-top: 3px; font-style: italic; font-weight: 600; font-size: clamp(15px, 2.5svh, 18px); color: var(--bone); }
+
+  .links { width: 100%; display: grid; gap: clamp(8px, 1.4svh, 12px); margin: clamp(12px, 2.2svh, 20px) 0 0; padding: 0; list-style: none; }
   .btn {
-    display: flex; align-items: center; gap: 16px;
-    padding: 18px 20px;
-    min-height: 84px;
-    border-radius: 18px;
-    text-decoration: none;
-    color: var(--white);
-    background: rgba(5, 12, 36, .72);
-    border: 2px solid rgba(240,185,58,.75);
-    box-shadow: 0 6px 20px rgba(0,0,0,.35);
-    transition: transform .12s ease, background .12s ease, border-color .12s ease;
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; gap: 14px;
+    padding: 9px 16px; min-height: clamp(60px, 9.4svh, 88px);
+    border-radius: 18px; text-decoration: none; color: var(--bone);
+    background: rgba(24, 9, 42, .82);
+    border: 2px solid rgba(255,122,20,.7);
+    box-shadow: 0 6px 18px rgba(0,0,0,.4);
+    animation: spot 6s ease-in-out infinite;
+    -webkit-tap-highlight-color: transparent;
   }
-  .btn:hover, .btn:focus-visible { transform: translateY(-2px); background: rgba(18, 38, 90, .9); border-color: var(--gold-2); outline: none; }
-  .btn:active { transform: translateY(0); }
-  .btn:focus-visible { box-shadow: 0 0 0 4px rgba(255,220,120,.55); }
-  .btn.primary { background: linear-gradient(180deg, var(--gold-2), var(--gold)); color: #1a1405; border-color: var(--gold-2); }
-  .btn.primary:hover, .btn.primary:focus-visible { background: linear-gradient(180deg, #ffe58f, #f7c24a); }
-  .ic {
-    flex: 0 0 52px; width: 52px; height: 52px; border-radius: 14px;
-    display: grid; place-items: center;
-    background: rgba(240,185,58,.16);
-    color: var(--gold-2);
+  .links li:nth-child(2) .btn, .links li:nth-child(2) .btn::after { animation-delay: 2s; }
+  .links li:nth-child(3) .btn, .links li:nth-child(3) .btn::after { animation-delay: 4s; }
+  .btn::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(105deg, transparent 35%, rgba(255,235,190,.38) 50%, transparent 65%);
+    transform: translateX(-130%); animation: sweep 6s ease-in-out infinite;
   }
-  .primary .ic { background: rgba(26,20,5,.12); color: #1a1405; }
-  .ic svg { width: 30px; height: 30px; }
+  @keyframes spot {
+    0%   { transform: scale(1); border-color: rgba(255,122,20,.7); box-shadow: 0 6px 18px rgba(0,0,0,.4); }
+    5%, 27% { transform: scale(1.035); border-color: var(--gold); box-shadow: 0 0 0 2px rgba(255,210,122,.35), 0 0 30px 6px rgba(255,122,20,.65); }
+    36%, 100% { transform: scale(1); border-color: rgba(255,122,20,.7); box-shadow: 0 6px 18px rgba(0,0,0,.4); }
+  }
+  @keyframes sweep { 0%, 4% { transform: translateX(-130%); } 24%, 100% { transform: translateX(130%); } }
+  .btn:hover, .btn:focus-visible { border-color: var(--gold); outline: none; }
+  .btn:active { transform: scale(.98); }
+  .btn.primary { background: linear-gradient(180deg, #ffa54a, #f26a00); color: var(--ink); border-color: #ffc57a; }
+  .ic { flex: 0 0 46px; width: 46px; height: 46px; border-radius: 13px; display: grid; place-items: center; background: rgba(255,122,20,.18); color: var(--orange-2); }
+  .primary .ic { background: rgba(26,16,32,.14); color: var(--ink); }
+  .ic svg { width: 27px; height: 27px; }
   .txt { flex: 1; min-width: 0; }
-  .title { font-family: "Fjalla One", "Arial Narrow", Impact, sans-serif; font-size: 26px; letter-spacing: .05em; line-height: 1.1; display: block; }
-  .sub { font-size: 15px; opacity: .85; display: block; margin-top: 4px; font-style: italic; }
-  .chev { flex: 0 0 auto; width: 22px; height: 22px; opacity: .8; }
-  footer { margin-top: 30px; font-family: "Fjalla One", "Arial Narrow", sans-serif; letter-spacing: .12em; font-size: 16px; opacity: .7; text-align: center; }
+  .title { display: block; font-family: "Fjalla One", "Arial Narrow", Impact, sans-serif; font-size: clamp(22px, 3.6svh, 27px); letter-spacing: .05em; line-height: 1.08; }
+  .sub { display: block; font-size: 14.5px; opacity: .9; margin-top: 2px; font-style: italic; }
+  .chev { flex: 0 0 auto; width: 20px; height: 20px; opacity: .85; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; }
+    .fly { display: none; }
+  }
 </style>
 </head>
 <body>
-<main>
-  <img class="avatar" src="karl.png" alt="Karaoke Karl" width="168" height="168">
-  <h1>KARAOKE KARL</h1>
-  <p class="tag">Pick a song. Tip your host. Join the fun.</p>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="bat" viewBox="0 5 120 40">
+    <polygon points="60.0,26.0 69.0,18.0 84.0,12.0 102.0,16.0 118.0,28.0 110.0,30.0 104.0,37.0 97.0,33.0 90.0,41.0 83.0,34.0 74.0,39.0 67.0,35.0 60.0,37.0 60.0,37.0 53.0,35.0 46.0,39.0 37.0,34.0 30.0,41.0 23.0,33.0 16.0,37.0 10.0,30.0 2.0,28.0 18.0,16.0 36.0,12.0 51.0,18.0 60.0,26.0" fill="#2c1a4a" stroke="#6a4a9a" stroke-width="1"/>
+    <ellipse cx="60" cy="30" rx="5" ry="8.5" fill="#2c1a4a" stroke="#6a4a9a" stroke-width="1"/>
+    <polygon points="55,24 56,15 59,22" fill="#2c1a4a" stroke="#6a4a9a" stroke-width="1"/><polygon points="65,24 64,15 61,22" fill="#2c1a4a" stroke="#6a4a9a" stroke-width="1"/>
+  </symbol>
+  <symbol id="pumpkin" viewBox="0 0 120 110">
+    <path d="M56 24 C54 12 60 6 70 4 C68 12 66 18 64 26 Z" fill="#4c7a2a"/>
+    <ellipse cx="32" cy="64" rx="26" ry="38" fill="#e8620a"/><ellipse cx="88" cy="64" rx="26" ry="38" fill="#e8620a"/>
+    <ellipse cx="46" cy="64" rx="28" ry="40" fill="#f57a14"/><ellipse cx="74" cy="64" rx="28" ry="40" fill="#f57a14"/>
+    <ellipse cx="60" cy="64" rx="22" ry="42" fill="#ff8c24"/>
+    <polygon points="34,56 52,56 43,38" fill="#fff0a8"/><polygon points="68,56 86,56 77,38" fill="#fff0a8"/>
+    <polygon points="56,66 64,66 60,58" fill="#fff0a8"/>
+    <polygon points="30,74 40,84 48,76 56,88 64,76 72,84 80,76 90,74 84,92 60,98 36,92" fill="#fff0a8"/>
+  </symbol>
+</svg>
 
-  <ul class="links">
-    <!-- To remove a button, delete its whole <li> block. To change where one goes, edit its href. -->
+<div class="scene">
+  <div class="moon" aria-hidden="true"></div>
+  <svg class="web" viewBox="0 0 300 300" aria-hidden="true"><g stroke="#c9b7e0" stroke-width="2" fill="none">
+    <line x1="0" y1="0" x2="300" y2="0"/><line x1="0" y1="0" x2="260" y2="150"/><line x1="0" y1="0" x2="212" y2="212"/><line x1="0" y1="0" x2="150" y2="260"/><line x1="0" y1="0" x2="0" y2="300"/>
+    <path d="M70,0 Q58,58 0,70"/><path d="M140,0 Q112,112 0,140"/><path d="M210,0 Q168,168 0,210"/><path d="M280,0 Q222,222 0,280"/>
+  </g></svg>
+  <div class="fly b1" aria-hidden="true"><svg viewBox="0 5 120 40"><use href="#bat"/></svg></div>
+  <div class="fly b2" aria-hidden="true"><svg viewBox="0 5 120 40"><use href="#bat"/></svg></div>
+  <div class="fly b3" aria-hidden="true"><svg viewBox="0 5 120 40"><use href="#bat"/></svg></div>
+  <div class="fog" aria-hidden="true"></div>
 
-    <li>
-      <a class="btn primary" href="https://costume-voting.vercel.app/" target="_blank" rel="noopener">
-        <span class="ic" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 5h3v2a3 3 0 0 1-3 3"/><path d="M7 5H4v2a3 3 0 0 0 3 3"/></svg>
-        </span>
-        <span class="txt"><span class="title">COSTUME CONTEST</span><span class="sub">Nominate and vote</span></span>
-        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-      </a>
-    </li>
+  <main>
+    <img class="avatar" src="karl.png" alt="Karaoke Karl" >
+    <h1>KARAOKE KARL</h1>
+    <p class="when"><span class="d">EVERY WEDNESDAY &bull; 7 TO 11 PM</span><span class="p">@ Aegir's Public House</span></p>
 
-    <li>
-      <a class="btn" href="https://www.karafun.com/069387" target="_blank" rel="noopener">
-        <span class="ic" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v4"/><path d="M8 22h8"/></svg>
-        </span>
-        <span class="txt"><span class="title">REQUEST A SONG</span><span class="sub">Open Karafun on your phone</span></span>
-        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-      </a>
-    </li>
+    <ul class="links">
+      <!-- To remove a button, delete its whole <li> block. To change where one goes, edit its href. -->
+      <li>
+        <a class="btn primary" href="https://costume-voting.vercel.app/" target="_blank" rel="noopener">
+          <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 5h3v2a3 3 0 0 1-3 3"/><path d="M7 5H4v2a3 3 0 0 0 3 3"/></svg></span>
+          <span class="txt"><span class="title">COSTUME CONTEST</span><span class="sub">Nominate and vote</span></span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </a>
+      </li>
+      <li>
+        <a class="btn" href="https://www.karafun.com/069387" target="_blank" rel="noopener">
+          <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v4"/><path d="M8 22h8"/></svg></span>
+          <span class="txt"><span class="title">REQUEST A SONG</span><span class="sub">Open Karafun on your phone</span></span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </a>
+      </li>
+      <li>
+        <a class="btn" href="https://venmo.com/u/Charles-Smith-542" target="_blank" rel="noopener">
+          <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M14.8 9.2C14.4 8.4 13.4 8 12 8c-1.6 0-2.7.7-2.7 1.8 0 2.6 5.4 1.2 5.4 3.9 0 1.1-1.1 1.9-2.7 1.9-1.4 0-2.5-.5-3-1.4"/><path d="M12 6.5V8M12 16v1.5"/></svg></span>
+          <span class="txt"><span class="title">TIP THE HOST</span><span class="sub">Venmo @Charles-Smith-542</span></span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </a>
+      </li>
+    </ul>
+  </main>
 
-    <li>
-      <a class="btn" href="https://venmo.com/u/Charles-Smith-542" target="_blank" rel="noopener">
-        <span class="ic" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M14.8 9.2C14.4 8.4 13.4 8 12 8c-1.6 0-2.7.7-2.7 1.8 0 2.6 5.4 1.2 5.4 3.9 0 1.1-1.1 1.9-2.7 1.9-1.4 0-2.5-.5-3-1.4"/><path d="M12 6.5V8M12 16v1.5"/></svg>
-        </span>
-        <span class="txt"><span class="title">TIP THE HOST</span><span class="sub">Venmo @Charles-Smith-542</span></span>
-        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-      </a>
-    </li>
-
-
-
-  </ul>
-
-  <footer>@KARAOKARL</footer>
-</main>
+  <div class="ground" aria-hidden="true">
+    <svg class="hill" viewBox="0 0 400 84" preserveAspectRatio="none"><path d="M0,40 C60,28 110,50 170,38 C230,26 290,48 340,36 C370,30 390,34 400,38 L400,84 L0,84 Z" fill="#05020a"/></svg>
+    <div class="ground-inner">
+      <div class="stone" style="left:26%"></div><div class="stone" style="left:72%;height:28px"></div>
+      <svg class="pk l" viewBox="0 0 120 110"><use href="#pumpkin"/></svg>
+      <svg class="pk r" viewBox="0 0 120 110"><use href="#pumpkin"/></svg>
+      <div class="handle">@KARAOKARL</div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
